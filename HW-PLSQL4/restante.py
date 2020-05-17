@@ -10,7 +10,7 @@ def drop_table(cursor):
 
 def create_table(db, cursor):
     try:
-        cursor.execute("CREATE TABLE biblioteca (id INTEGER, nume_autor VARCHAR2(20), prenume_autor VARCHAR2(20), " +
+        cursor.execute("CREATE TABLE biblioteca (id_student INTEGER, nume_autor VARCHAR2(20), prenume_autor VARCHAR2(20), " +
                        "titlu_carte VARCHAR(50), volum INTEGER)")
         print("Tabela biblioteca a fost creata cu succes")
         db.commit()
@@ -42,16 +42,17 @@ def add_in_table(db, cursor):
         books = random.randint(0, 4)
         print(books)
         if books == 0:
-            cursor.execute("INSERT INTO biblioteca(id) VALUES ({})".format(student))
+            cursor.execute("INSERT INTO biblioteca(id_student) VALUES ({})".format(student))
             print("studentul e {} book e 0".format(student))
         else:
             for book in range(books):
-                author_first_name = str(random.sample(authors_first_name, 1))
+                author_first_name = random.sample(authors_first_name, 1)
                 author_last_name = random.sample(authors_last_name, 1)
                 book_title = random.sample(books_title, 1)
                 volum = random.randint(1, 6)
                 print(student, author_last_name, author_first_name, book_title, volum)
-                command = "INSERT INTO biblioteca (id,nume_autor, prenume_autor, titlu_carte, volum) VALUES (" + str(student) + "," + author_last_name[0] + "," + author_first_name[0] + "," + book_title[0] + "," + str(volum) + ")"
+                command = "INSERT INTO biblioteca(id_student,nume_autor,prenume_autor,titlu_carte,volum) VALUES (" + str(student) + "," + author_last_name[0] + "," + author_first_name[0] + "," + book_title[0] + "," + str(volum) + ")"
+                print(command)
                 cursor.execute(command)
     db.commit()
 
