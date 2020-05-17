@@ -4,8 +4,10 @@ import time
 import cx_Oracle
 
 
-def drop_table(cursor):
+def drop_table(db, cursor):
     cursor.execute("DROP TABLE biblioteca")
+    db.commit();
+    print("Tabela biblioteca a fost stearsa")
 
 
 def create_table(db, cursor):
@@ -40,10 +42,8 @@ def add_in_table(db, cursor):
     row, = cursor.fetchone()
     for student in range(row):
         books = random.randint(0, 4)
-        print(books)
         if books == 0:
             cursor.execute("INSERT INTO biblioteca(id_student) VALUES ({})".format(student))
-            print("studentul e {} book e 0".format(student))
         else:
             for book in range(books):
                 author_first_name = random.sample(authors_first_name, 1)
@@ -51,7 +51,7 @@ def add_in_table(db, cursor):
                 book_title = random.sample(books_title, 1)
                 volum = random.randint(1, 6)
                 print(student, author_last_name, author_first_name, book_title, volum)
-                command = "INSERT INTO biblioteca(id_student,nume_autor,prenume_autor,titlu_carte,volum) VALUES (" + str(student) + "," + author_last_name[0] + "," + author_first_name[0] + "," + book_title[0] + "," + str(volum) + ")"
+                command = "INSERT INTO biblioteca(id_student,nume_autor,prenume_autor,titlu_carte,volum) VALUES (" + str(student) + "," + author_last_name[0] + "," + author_first_name[0] + "," + book_title[0] + "," + str(volum) + ");"
                 print(command)
                 cursor.execute(command)
     db.commit()
@@ -66,7 +66,7 @@ def main():
     dsn = cx_Oracle.makedsn(host="localhost", port=32769)
     connection = cx_Oracle.connect(user="system", password="oracle", dsn=dsn)
     cur = connection.cursor()
-    #drop_table(cur)
+    drop_table(connection, cur)
     print("test1")
     create_table(connection, cur)
     print("test2")
