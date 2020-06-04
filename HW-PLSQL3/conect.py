@@ -12,7 +12,7 @@ def get_friends(conn, id_student):
         print("Studentului: ")
         print(cur.fetchone())
         print("\nI se sugereaza prietenii: ")
-        cur.execute("select S.id, S.nume, S.prenume from studenti S where id in (select id_student2 from " +
+        cur.execute("Select S.id, S.nume, S.prenume from studenti S where id in (select id_student2 from " +
                     "(select t2.id_student2 from prieteni t1 join prieteni t2 " +
                     "on t1.id_student1=" + str(id_student) + " and t1.id_student2=t2.id_student1 " +
                     "where t2.id_student2 NOT IN " +

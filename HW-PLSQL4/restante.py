@@ -6,14 +6,14 @@ import cx_Oracle
 
 def drop_table(db, cursor):
     cursor.execute("DROP TABLE biblioteca")
-    db.commit();
+    db.commit()
     print("Tabela biblioteca a fost stearsa")
 
 
 def create_table(db, cursor):
     try:
-        cursor.execute("CREATE TABLE biblioteca (id_student INTEGER, nume_autor VARCHAR2(20), prenume_autor VARCHAR2(20), " +
-                       "titlu_carte VARCHAR(50), volum INTEGER)")
+        cursor.execute("CREATE TABLE biblioteca (id_student INTEGER, nume_autor CHAR(20), prenume_autor CHAR(20), " +
+                       "titlu_carte CHAR(50), volum INTEGER)")
         print("Tabela biblioteca a fost creata cu succes")
         db.commit()
     except cx_Oracle.DatabaseError as e:
@@ -40,21 +40,28 @@ def add_in_table(db, cursor):
                    "La Medeleni", "Caietele", "Jurnal", "Jurnalul fericirii"]
     cursor.execute("SELECT COUNT(*) FROM STUDENTI")
     row, = cursor.fetchone()
+    print("row este", row)
     for student in range(row):
-        books = random.randint(0, 4)
+        # books = random.randint(0, 4)
+        books = 2
         if books == 0:
-            cursor.execute("INSERT INTO biblioteca(id_student) VALUES ({})".format(student))
+            command = "INSERT INTO biblioteca(id_student) VALUES ({})".format(student)
+            cursor.execute(command)
+            print(command)
         else:
+            print(books)
             for book in range(books):
+                print(book)
                 author_first_name = random.sample(authors_first_name, 1)
                 author_last_name = random.sample(authors_last_name, 1)
                 book_title = random.sample(books_title, 1)
                 volum = random.randint(1, 6)
                 print(student, author_last_name, author_first_name, book_title, volum)
-                command = "INSERT INTO biblioteca(id_student,nume_autor,prenume_autor,titlu_carte,volum) VALUES (" + str(student) + "," + author_last_name[0] + "," + author_first_name[0] + "," + book_title[0] + "," + str(volum) + ");"
+                command = 'INSERT INTO biblioteca(id_student,nume_autor,prenume_autor,titlu_carte,volum) VALUES (' + str(student) + ',' + author_last_name[0] + ',' + author_first_name[0] + ',' + book_title[0] + ',' + str(volum) + ')'
                 print(command)
                 cursor.execute(command)
-    db.commit()
+                print("urmeaza commit")
+                db.commit()
 
 
 def select_from_table(cursor):
